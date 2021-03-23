@@ -14,5 +14,5 @@ public class CategoryDto {
     private String description;
 
     @NotNull(message = "ERROR !!! , enter languages")
-    private List<Integer> languageId;
+    private Integer languageId;
 }

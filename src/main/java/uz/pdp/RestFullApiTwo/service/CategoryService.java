@@ -31,12 +31,14 @@ public class CategoryService {
      */
     public ApiResponse createCategory(CategoryDto categoryDto) {
 
-        List<Language> languages = languageRepository.findAllById(categoryDto.getLanguageId());
+        Optional<Language> optionalLanguage = languageRepository.findById(categoryDto.getLanguageId());
+        if (!optionalLanguage.isPresent())
+            return new ApiResponse("language not found",false);
 
         Category category = new Category();
         category.setName(categoryDto.getName());
         category.setDescription(categoryDto.getDescription());
-        category.setLanguage(languages);
+        category.setLanguage(optionalLanguage.get());
         categoryRepository.save(category);
         return new ApiResponse("Category created", true);
     }
@@ -91,12 +93,14 @@ public class CategoryService {
         if (!optionalCategory.isPresent())
             return new ApiResponse("category not found", false);
 
-        List<Language> languages = languageRepository.findAllById(categoryDto.getLanguageId());
+        Optional<Language> optionalLanguage = languageRepository.findById(categoryDto.getLanguageId());
+        if (!optionalLanguage.isPresent())
+            return new ApiResponse("language not found",false);
 
         Category category = optionalCategory.get();
         category.setName(categoryDto.getName());
         category.setDescription(categoryDto.getDescription());
-        category.setLanguage(languages);
+        category.setLanguage(optionalLanguage.get());
         categoryRepository.save(category);
         return new ApiResponse("category edited", true);
     }
